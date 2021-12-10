@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+  </head>
+  <body>
+      <h1 id="now"></h1>
+      <h2 id="next"></h2>
+      <iframe id="id_ifrem" frameborder="0" width="1000" height="800" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+      <script>
+        Date.initAsUTC = function(utc_datetime) {
+          var local = new Date(utc_datetime)
+          var offset = -1 * local.getTimezoneOffset() / 60
+          var utc  = new Date(local.getTime() + (offset * 3600000))
+          return utc
+        }
+        var session_list = {
+          'https://cmsworkshops.com/APSIPA2021/view_session.php?SessionID=1011':['2021/12/15 02:00:00','2021/12/15 04:20:00'],
+          'https://cmsworkshops.com/APSIPA2021/view_session.php?SessionID=1012':['2021/12/15 05:40:00','2021/12/15 07:40:00'],
+          'https://cmsworkshops.com/APSIPA2021/view_session.php?SessionID=1013':['2021/12/16 00:00:00','2021/12/16 02:00:00'],
+          'https://cmsworkshops.com/APSIPA2021/view_session.php?SessionID=1014':['2021/12/16 05:00:00','2021/12/16 07:00:00'],
+          'https://cmsworkshops.com/APSIPA2021/view_session.php?SessionID=1015':['2021/12/16 07:20:00','2021/12/16 09:20:00'],
+          'https://cmsworkshops.com/APSIPA2021/view_session.php?SessionID=1016':['2021/12/17 01:20:00','2021/12/17 03:20:00'],
+          'https://cmsworkshops.com/APSIPA2021/view_session.php?SessionID=1017':['2021/12/17 04:00:00','2021/12/17 06:00:00'],
+          'https://cmsworkshops.com/APSIPA2021/view_session.php?SessionID=1018':['2021/12/17 06:20:00','2021/12/17 08:00:00'],
+        }
+        var iframe = document.getElementById('id_ifrem');
+        var now_date = new Date()
+        document.getElementById('now').textContent = "Current: " + now_date
+        $.each(session_list,function(redirect_url,date_time) {
+          start_utc = Date.initAsUTC(date_time[0])
+          end_utc = Date.initAsUTC(date_time[1])
+          if (now_date >= start_utc  && now_date <=  end_utc){
+            //location.href = redirect_url
+            iframe.src = redirect_url
+            return false
+          } else {
+            $.each(session_list,function(redirect_url,date_time) {
+              start_utc = Date.initAsUTC(date_time[0])
+              end_utc = Date.initAsUTC(date_time[1])
+              if ( now_date <= end_utc) {
+                document.getElementById('next').textContent="Next session will start: "+ end_utc
+                iframe.src = redirect_url
+                return false;
+              }
+            });
+          }
+        });
+      </script>
+
+  </body>
+</html>
