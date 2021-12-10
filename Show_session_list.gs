@@ -1,7 +1,7 @@
 function doGet(e) {
   const session = e.parameter.session;
 
-  var htmlOutput = HtmlService.createTemplateFromFile('ondemand1')
+  var htmlOutput = HtmlService.createTemplateFromFile('presentation_list')
   
   htmlOutput.session = session
   htmlOutput = htmlOutput.evaluate();
